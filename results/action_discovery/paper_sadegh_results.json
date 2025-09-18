@@ -1,0 +1,115 @@
+{
+  "tasks": [
+    {
+      "task_name": "Noise Correlation Analysis in Neural Populations",
+      "description": "Calculates pairwise correlation coefficients between neurons to quantify correlated variability in neural responses after accounting for stimulus-driven activity",
+      "inputs": "Time series of neural activity from multiple neurons across multiple trials, with stimulus condition labels for each trial",
+      "outputs": "Matrix of noise correlation coefficients between neuron pairs, statistical metrics about correlation distribution",
+      "code_implementation": "Implementable with Python using NumPy and SciPy for correlation calculations. First subtract mean stimulus-evoked response from each neuron's activity for each stimulus condition, then calculate Pearson correlation between residuals for each neuron pair.",
+      "frequency": "Very common in systems neuroscience and neural coding studies",
+      "standard_methods": "Pearson correlation of trial-to-trial variability, with optional trial shuffling to create null distributions",
+      "example": "The paper calculated noise correlation coefficients between pairs of neurons by integrating spike counts between 0.5-2s after stimulus onset, subtracting the mean stimulus-evoked response, then calculating Pearson correlation coefficients between the resulting residuals."
+    },
+    {
+      "task_name": "Linear Discriminant Analysis for Neural Population Decoding",
+      "description": "Implements optimal linear classification to decode stimulus identity from neural population activity",
+      "inputs": "Neural activity matrix (neurons \u00d7 trials) and corresponding stimulus condition labels",
+      "outputs": "Discriminability metric (d'), optimal decoding weights, classification accuracy",
+      "code_implementation": "Implementable with scikit-learn's LinearDiscriminantAnalysis. The optimal weight vector is calculated as w_opt = \u03a3\u207b\u00b9\u0394\u03bc, where \u03a3 is the noise covariance matrix and \u0394\u03bc is the difference between mean responses to different stimuli.",
+      "frequency": "Extremely common in neural decoding studies",
+      "standard_methods": "Linear discriminant analysis considering noise covariance structure, cross-validation for performance assessment",
+      "example": "The paper applied linear discriminant analysis to decode which visual stimulus was presented (gratings oriented at \u00b130\u00b0) based on the activity of hundreds of simultaneously recorded neurons, calculating d' as a measure of decoding performance."
+    },
+    {
+      "task_name": "Partial Least Squares Dimensionality Reduction for Neural Data",
+      "description": "Reduces high-dimensional neural data to a lower-dimensional representation that maximizes discrimination between stimulus conditions",
+      "inputs": "High-dimensional neural activity data (neurons \u00d7 trials) and corresponding stimulus labels",
+      "outputs": "Reduced-dimensional representation (typically 5D in this paper) that preserves stimulus-related variance",
+      "code_implementation": "Implementable with scikit-learn's PLSRegression module, which finds dimensions that maximize covariance between neural activity and stimulus conditions.",
+      "frequency": "Common in neuroscience for analyzing high-dimensional neural recordings",
+      "standard_methods": "Partial Least Squares regression with cross-validation to determine optimal number of components",
+      "example": "The paper reduced neural ensemble activity from thousands of neurons to 5 dimensions using PLS, finding that this dimensionality was optimal for discriminating between visual stimuli without overfitting."
+    },
+    {
+      "task_name": "Information Scaling Analysis with Neural Population Size",
+      "description": "Analyzes how decoding performance (information content) scales with increasing numbers of neurons to detect information-limiting correlations",
+      "inputs": "Neural activity data from populations of different sizes, stimulus condition labels",
+      "outputs": "Scaling curve of discriminability (d') or information content as a function of population size, estimate of information-limiting correlation parameter (\u03b5)",
+      "code_implementation": "Implementable with Python using NumPy for subsampling neurons and scikit-learn for decoding. The relationship between information (I) and population size (n) follows I(n) = (I\u2080n)/(1+\u03b5n), where \u03b5 is the information-limiting correlation parameter.",
+      "frequency": "Common in systems neuroscience for large-scale recordings",
+      "standard_methods": "Random subsampling of neurons, decoder performance evaluation, parametric curve fitting",
+      "example": "The paper randomly sampled different numbers of neurons and calculated how decoding performance (d') scaled with population size, fitting the results to a theoretical model to extract the information-limiting correlation parameter \u03b5 = 0.0021 \u00b1 0.0008."
+    },
+    {
+      "task_name": "Trial-Shuffling Permutation Test for Neural Correlations",
+      "description": "Creates control datasets by randomly permuting trial labels to destroy correlations while preserving single-neuron statistics",
+      "inputs": "Neural activity data matrix (neurons \u00d7 trials) with stimulus condition labels",
+      "outputs": "Shuffled dataset with preserved single-neuron statistics but destroyed inter-neuronal correlations",
+      "code_implementation": "Implementable with NumPy by randomly permuting trial indices for each neuron independently while maintaining stimulus condition grouping.",
+      "frequency": "Very common in neuroscience for creating null distributions",
+      "standard_methods": "Random permutation of trial indices for each neuron independently, preserving stimulus conditions",
+      "example": "The paper created trial-shuffled datasets by permuting trial indices for each neuron independently, then compared decoder performance between real and shuffled data to quantify the impact of noise correlations."
+    },
+    {
+      "task_name": "Calcium Imaging Signal Extraction with PCA-ICA",
+      "description": "Extracts individual neuronal signals from calcium imaging videos using dimensionality reduction and source separation",
+      "inputs": "Motion-corrected calcium imaging video data (pixels \u00d7 time)",
+      "outputs": "Spatial filters for identified neurons and corresponding temporal activity traces",
+      "code_implementation": "Implementable with Python using scikit-learn for PCA and ICA, or specialized packages like CaImAn. First apply PCA to reduce dimensionality, then ICA to identify independent sources.",
+      "frequency": "Very common in calcium imaging analysis",
+      "standard_methods": "Principal Component Analysis followed by Independent Component Analysis, with subsequent spatial filtering",
+      "example": "The paper applied PCA followed by ICA to extract spatial filters and time traces of individual neurons from calcium imaging data, followed by visual inspection and thresholding to isolate cell bodies."
+    },
+    {
+      "task_name": "Spike Inference from Calcium Imaging Data",
+      "description": "Estimates underlying spike trains from calcium fluorescence traces using deconvolution",
+      "inputs": "Calcium activity traces (\u0394F/F\u2080) for individual neurons",
+      "outputs": "Estimated spike counts per time bin",
+      "code_implementation": "Implementable with Python using specialized packages like OASIS (from CaImAn) that implement fast non-negative deconvolution algorithms.",
+      "frequency": "Very common in calcium imaging analysis",
+      "standard_methods": "Fast non-negative deconvolution that models calcium dynamics and estimates most likely spike trains",
+      "example": "The paper applied fast non-negative deconvolution to the \u0394F/F\u2080 trace of each cell to estimate the most likely number of spikes fired in each time bin."
+    },
+    {
+      "task_name": "D-prime (d') Calculation for Neural Discrimination",
+      "description": "Quantifies the discriminability between neural responses to different stimuli using signal detection theory",
+      "inputs": "Neural response distributions for two stimulus conditions",
+      "outputs": "D-prime (d') value representing discrimination performance",
+      "code_implementation": "Implementable with NumPy by calculating the difference between distribution means divided by their pooled standard deviation, or more generally as d' = \u221a(\u0394\u03bc\u1d40 \u03a3\u207b\u00b9 \u0394\u03bc) where \u0394\u03bc is the mean difference and \u03a3 is the noise covariance matrix.",
+      "frequency": "Very common in sensory neuroscience and psychophysics",
+      "standard_methods": "Signal detection theory metrics, often calculated using the formula d' = (\u03bc\u2081 - \u03bc\u2082)/\u03c3 for simple cases",
+      "example": "The paper calculated d' values to quantify how well neural responses could discriminate between visual gratings oriented at \u00b130\u00b0 or \u00b16\u00b0, finding d' \u2248 6 for the \u00b130\u00b0 condition."
+    }
+  ],
+  "databases": [],
+  "software": [
+    {
+      "name": "TurboReg",
+      "description": "Image registration algorithm for motion correction in microscopy data",
+      "url": "http://bigwww.epfl.ch/thevenaz/turboreg/",
+      "usage": "Commonly used for rigid registration of calcium imaging data to correct for motion artifacts",
+      "example": "The paper used TurboReg to correct for lateral displacements in calcium imaging videos before further analysis."
+    },
+    {
+      "name": "CaImAn",
+      "description": "Calcium Imaging Analysis pipeline for preprocessing, cell identification, and signal extraction",
+      "url": "https://github.com/flatironinstitute/CaImAn",
+      "usage": "Used for end-to-end analysis of calcium imaging data, including motion correction, cell segmentation, and spike inference",
+      "example": "While not explicitly mentioned, the paper uses methods (PCA-ICA for cell extraction, fast non-negative deconvolution) that are implemented in CaImAn."
+    },
+    {
+      "name": "ScanImage",
+      "description": "Software for controlling laser scanning microscopes",
+      "url": "http://scanimage.vidriotechnologies.com",
+      "usage": "Used for data acquisition in two-photon microscopy experiments",
+      "example": "The paper used ScanImage (version 3.8) for controlling their custom multi-beam two-photon microscope."
+    },
+    {
+      "name": "Mosaic",
+      "description": "Commercial software for calcium imaging analysis from Inscopix",
+      "url": "https://www.inscopix.com/nVista",
+      "usage": "Used for cell identification and signal extraction from calcium imaging data",
+      "example": "The paper used Mosaic software (version 0.99.17) from Inscopix, which implements PCA-ICA for cell sorting."
+    }
+  ]
+}

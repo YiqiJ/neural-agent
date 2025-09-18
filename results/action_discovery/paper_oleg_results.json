@@ -1,0 +1,123 @@
+{
+  "tasks": [
+    {
+      "task_name": "Canonical Correlation Analysis (CCA) for Neural Time Series Data",
+      "description": "Identifies shared patterns of neural activity between different brain regions or datasets by finding linear combinations that maximize correlation",
+      "inputs": "Two matrices of neural activity time series data from different brain regions or sources (neurons \u00d7 time points)",
+      "outputs": "CCA modes (canonical variates), correlation coefficients between modes, and weights for each neuron",
+      "code_implementation": "Python implementation using scikit-learn's CCA module or statsmodels. Example: from sklearn.cross_decomposition import CCA; cca = CCA(n_components=n); X_c, Y_c = cca.fit_transform(X, Y); corr_coefs = [np.corrcoef(X_c[:,i], Y_c[:,i])[0,1] for i in range(n)]",
+      "frequency": "Very common in neuroscience research analyzing multi-region neural recordings",
+      "standard_methods": "Dimensionality reduction through CCA, cross-validation with train/test splits, correlation coefficient calculation",
+      "example": "The paper uses CCA to identify correlated noise fluctuations between pairs of brain areas during visual stimulation, revealing that the number of significant CCA modes was generally less than 20, and these modes comprised ~60% of total cortical fluctuations"
+    },
+    {
+      "task_name": "Principal Component Analysis (PCA) for Neural Population Dynamics",
+      "description": "Reduces dimensionality of neural data by identifying orthogonal directions of maximum variance in population activity",
+      "inputs": "Matrix of neural activity data (neurons \u00d7 time points or trials)",
+      "outputs": "Principal components (eigenvectors), explained variance by each component, and projections of data onto principal components",
+      "code_implementation": "Python implementation using scikit-learn's PCA module or NumPy's SVD functions. Example: from sklearn.decomposition import PCA; pca = PCA(n_components=n); components = pca.fit_transform(neural_data); explained_variance = pca.explained_variance_ratio_",
+      "frequency": "Extremely common in neuroscience for dimensionality reduction of neural data",
+      "standard_methods": "Covariance matrix calculation, eigendecomposition, projection of data onto principal components",
+      "example": "The paper uses PCA to identify fluctuation modes in neural activity, including a global fluctuation mode that arose ~1s into stimulus presentation and was orthogonal to sensory-coding modes"
+    },
+    {
+      "task_name": "Linear Decoder Training for Neural Stimulus Classification",
+      "description": "Trains a linear model to classify stimuli or behavioral conditions based on neural population activity",
+      "inputs": "Neural activity data matrix (neurons \u00d7 trials or time points) and corresponding stimulus/condition labels",
+      "outputs": "Decoder weights, classification accuracy metrics (often d-prime values), predictions for test data",
+      "code_implementation": "Python implementation using scikit-learn for linear models. Example: from sklearn.linear_model import LogisticRegression; from sklearn.model_selection import train_test_split; X_train, X_test, y_train, y_test = train_test_split(neural_data, labels); model = LogisticRegression().fit(X_train, y_train); accuracy = model.score(X_test, y_test)",
+      "frequency": "Very common in neuroscience for decoding neural representations",
+      "standard_methods": "Linear discriminant analysis, logistic regression, cross-validation, performance evaluation with d-prime or accuracy",
+      "example": "The paper trains optimal linear decoders on neural ensemble activity in 100-ms time-bins to distinguish between two types of correctly performed trials, implementing multiple variants including instantaneous decoders, consensus decoders, and common decoders optimized for different time intervals"
+    },
+    {
+      "task_name": "Noise Correlation Analysis Between Neuronal Pairs",
+      "description": "Quantifies correlated variability in neural responses across trials for the same stimulus condition",
+      "inputs": "Neural activity time series from pairs of neurons across multiple trials, stimulus condition labels",
+      "outputs": "Correlation coefficient matrices, temporal noise correlation profiles, statistics grouped by neuronal tuning similarity",
+      "code_implementation": "Python implementation using NumPy and SciPy. Example: from scipy.stats import pearsonr; def compute_noise_correlation(neuron1_activity, neuron2_activity, stimulus_conditions): corrs = []; for stim in np.unique(stimulus_conditions): stim_trials = (stimulus_conditions == stim); n1 = neuron1_activity[stim_trials]; n2 = neuron2_activity[stim_trials]; corrs.append(pearsonr(n1, n2)[0]); return np.mean(corrs)",
+      "frequency": "Very common in systems neuroscience, especially in population coding studies",
+      "standard_methods": "Pearson correlation coefficient calculation after removing stimulus-driven components, grouped by neuronal tuning similarity",
+      "example": "The paper calculates noise correlations between pairs of similarly tuned stimulus-coding cells, showing they peaked ~200ms after stimulus onset, with distinct amplitudes and kinetics from single cell variability"
+    },
+    {
+      "task_name": "Permutation Test for Neural Response Significance",
+      "description": "Non-parametric statistical test to determine if neural responses significantly encode stimuli or behaviors",
+      "inputs": "Neural activity data, trial condition labels (stimulus type, behavioral response), significance threshold (p-value)",
+      "outputs": "P-values for each neuron, binary classification of neurons as significantly responsive",
+      "code_implementation": "Python implementation using NumPy for random permutations. Example: import numpy as np; def permutation_test(neural_data, labels, n_permutations=1000): observed_statistic = compute_statistic(neural_data, labels); null_distribution = [compute_statistic(neural_data, np.random.permutation(labels)) for _ in range(n_permutations)]; p_value = sum(null_distribution >= observed_statistic) / n_permutations; return p_value",
+      "frequency": "Very common in neuroscience for hypothesis testing when assumptions of parametric tests may not be met",
+      "standard_methods": "Random shuffling of condition labels to create null distribution, calculation of test statistic for each permutation, comparison of observed statistic to null distribution",
+      "example": "The paper uses permutation tests to identify cells modulated by the mouse's upcoming response, finding that 11\u00b13% of stimulus-coding cells were significantly modulated (P<0.01)"
+    },
+    {
+      "task_name": "Time-Resolved Information Content Analysis with d-prime",
+      "description": "Quantifies how neural information about stimuli or behaviors changes over time using signal detection theory metrics",
+      "inputs": "Time series of neural activity and corresponding stimulus/behavior labels",
+      "outputs": "Time-resolved d-prime or d-prime squared values showing information content at each time point",
+      "code_implementation": "Python implementation using NumPy. Example: import numpy as np; def calculate_dprime_over_time(neural_timeseries, condition_labels, time_bins): dprime_values = []; for t in time_bins: data_t = neural_timeseries[:, t]; condition1 = data_t[condition_labels == 1]; condition2 = data_t[condition_labels == 2]; mean1, mean2 = np.mean(condition1), np.mean(condition2); var1, var2 = np.var(condition1), np.var(condition2); pooled_var = (var1 + var2)/2; dprime = (mean1 - mean2) / np.sqrt(pooled_var); dprime_values.append(dprime); return np.array(dprime_values)",
+      "frequency": "Common in sensory neuroscience and neural decoding studies",
+      "standard_methods": "Sliding window analysis, signal detection theory metrics, statistical comparison between time points",
+      "example": "The paper tracks information content (measured by d-prime squared) throughout stimulus presentation, showing it varied from peak values just after stimulus onset to lower values near stimulation offset, representing a 3.5-fold variation in coding efficiency"
+    },
+    {
+      "task_name": "Image Registration for Calcium Imaging Data",
+      "description": "Aligns calcium imaging frames to correct for motion artifacts and enable tracking of the same neurons across time",
+      "inputs": "Time series of calcium imaging frames/videos with potential motion artifacts",
+      "outputs": "Motion-corrected calcium imaging videos, transformation parameters",
+      "code_implementation": "Python implementation using specialized libraries like CaImAn, SIMA, or general-purpose image registration with OpenCV or scikit-image. Example: import cv2; def register_frames(frames, template=None): if template is None: template = frames[0]; registered = np.zeros_like(frames); for i, frame in enumerate(frames): warp_matrix = cv2.findTransformECC(template, frame, warp_matrix_type=cv2.MOTION_TRANSLATION); registered[i] = cv2.warpAffine(frame, warp_matrix, template.shape); return registered",
+      "frequency": "Extremely common in calcium imaging analysis pipelines",
+      "standard_methods": "Image registration algorithms using rigid or non-rigid transformations",
+      "example": "The paper performs image registration using TurboReg for analyzing data across 5 days of recordings from the same neurons, correcting for lateral movements of the brain in their calcium imaging videos"
+    },
+    {
+      "task_name": "PCA/ICA-based Neuronal Activity Extraction from Calcium Imaging",
+      "description": "Extracts individual neurons and their activity traces from calcium imaging videos using dimensionality reduction and source separation",
+      "inputs": "Preprocessed calcium imaging videos (multi-GB to TB size)",
+      "outputs": "Spatial filters (neuron masks) and corresponding calcium activity traces for individual neurons",
+      "code_implementation": "Python implementation using specialized packages like CaImAn or custom implementations with scikit-learn. Example: from sklearn.decomposition import PCA, FastICA; pca = PCA(n_components=100); pca_components = pca.fit_transform(reshaped_movie); ica = FastICA(n_components=50); ica_components = ica.fit_transform(pca_components); spatial_filters = ica.mixing_.T.reshape(50, height, width); temporal_traces = ica_components",
+      "frequency": "Very common in calcium imaging and neuroimaging research",
+      "standard_methods": "Dimensionality reduction with PCA followed by source separation with ICA",
+      "example": "The paper applies PCA/ICA to extract individual neurons and their calcium activity traces from calcium videos, dividing data into spatial tiles and processing them in parallel to identify neurons from large imaging datasets"
+    }
+  ],
+  "databases": [
+    {
+      "name": "Allen Brain Atlas",
+      "description": "A genome-wide map of gene expression in the mouse brain, including reference atlas data for anatomical structures",
+      "url": "https://portal.brain-map.org/",
+      "usage": "Used for identifying and mapping brain regions in neuroanatomical studies, providing reference coordinates for brain structures",
+      "example": "The paper aligns the Allen Brain Atlas cortical map to experimentally determined boundaries to infer the locations of cortical areas beyond those directly identified through retinotopic mapping"
+    }
+  ],
+  "software": [
+    {
+      "name": "TurboReg",
+      "description": "An image registration algorithm for aligning images and correcting for motion in time series data",
+      "url": "http://bigwww.epfl.ch/thevenaz/turboreg/",
+      "usage": "Used for motion correction in calcium imaging and other microscopy time series data",
+      "example": "The paper uses TurboReg to correct for lateral movements of the brain in their calcium imaging videos"
+    },
+    {
+      "name": "MATLAB",
+      "description": "A programming environment and language commonly used for scientific computing and data analysis",
+      "url": "https://www.mathworks.com/products/matlab.html",
+      "usage": "Used for implementing custom analysis routines, data processing, and visualization in neuroscience research",
+      "example": "The paper uses MATLAB (version 2019a) for writing analytic routines and for stimulus presentation, behavioral apparatus control, and video capture triggering"
+    },
+    {
+      "name": "Mosaic",
+      "description": "Commercial software for analyzing calcium imaging data from Inscopix miniature microscopes",
+      "url": "https://www.inscopix.com/nVista",
+      "usage": "Used for extracting neurons and calcium activity traces from calcium imaging data",
+      "example": "The paper mentions using Mosaic software (version 0.99.17; Inscopix Inc.) as commercial software for extracting neurons and calcium activity traces"
+    },
+    {
+      "name": "CaImAn",
+      "description": "Calcium Imaging Analysis pipeline for preprocessing, neuron detection, and extraction of neural activity from calcium imaging data",
+      "url": "https://github.com/flatironinstitute/CaImAn",
+      "usage": "Used for motion correction, neuron segmentation, and signal extraction in calcium imaging analysis",
+      "example": "While not explicitly mentioned, the paper describes computational approaches for calcium imaging analysis that are commonly implemented in packages like CaImAn"
+    }
+  ]
+}
