@@ -46,21 +46,21 @@ class PaperTaskExtractor(base_agent):
 Your job is to analyze chunks of academic papers and identify ONLY the most common, generalizable computational tasks that are widely used across biomedical research and can be implemented with Python or Linux code.
 
 STRICT GUIDELINES:
-1. ONLY extract tasks that are extremely common and standard in computational biomedical research
+1. Extract computational tasks that are used in biomedical research and can be implemented with Python or Linux code
 2. Each task MUST have clear, well-defined inputs and outputs
-3. Tasks MUST be generalizable across many different papers and research questions
-4. Be VERY selective - only include tasks that appear in hundreds of papers
-5. If a task is specific to this paper, unclear, or not widely used, DO NOT include it
-6. Focus on computational tasks that can be implemented with Python or Linux code
-7. Each task should be something that could be implemented as a function with clear inputs/outputs
-8. Also identify commonly used databases and software packages mentioned in the text
-9. Tasks MUST be CONCRETE and SPECIFIC - include exact methodological details
-10. Avoid vague task names like "Statistical Analysis" - instead use specific protocol names like "Two-way ANOVA with Tukey's Post-hoc Test using SciPy"
-11. DO NOT include wet lab procedures that cannot be implemented computationally
-12. ONLY include tasks that could be automated with code
+3. Focus on tasks that are generalizable and could be reused in similar research contexts
+4. If a task is too specific to this exact dataset or unclear, DO NOT include it
+5. Focus on computational tasks that can be implemented with Python or Linux code
+6. Each task should be something that could be implemented as a function with clear inputs/outputs
+7. Also identify databases and software packages mentioned in the text
+8. Tasks MUST be CONCRETE and SPECIFIC - include exact methodological details
+9. Avoid vague task names like "Statistical Analysis" - instead use specific protocol names like "Two-way ANOVA with Tukey's Post-hoc Test using SciPy"
+10. DO NOT include wet lab procedures that cannot be implemented computationally
+11. ONLY include tasks that could be automated with code
+12. Include tasks that represent standard computational approaches in the field
 
 For the following chunk of text from an academic paper, provide:
-1. A list of ONLY the most common, generalizable COMPUTATIONAL tasks identified (be extremely selective)
+1. A list of generalizable COMPUTATIONAL tasks identified that could be reused in similar research
 2. For each task, clearly define:
    - Task name: A SPECIFIC and CONCRETE name with methodological details (e.g., "RNA-seq Differential Expression Analysis with DESeq2" instead of just "Gene Expression Analysis")
    - Input: What SPECIFIC data or parameters the task requires
@@ -81,9 +81,9 @@ Remember, it's better to return NO tasks than to include tasks that aren't extre
         # Prompt for consolidating tasks
         self.consolidation_prompt = """You are a research methodology expert. Your task is to consolidate lists of computational research tasks extracted from different chunks of an academic paper.
 
-BE EXTREMELY SELECTIVE. Only include tasks that are:
-1. Fundamental to computational biomedical research
-2. Used in hundreds of papers across different subfields
+BE SELECTIVE but REALISTIC for small-scale analysis. Only include tasks that are:
+1. Fundamental computational approaches in biomedical research
+2. Used across different studies in the field (not necessarily hundreds of papers)
 3. Have clear, well-defined inputs and outputs
 4. Represent standard computational approaches
 5. Could be implemented as a function with specific inputs and outputs
@@ -92,11 +92,10 @@ BE EXTREMELY SELECTIVE. Only include tasks that are:
 8. Are computational in nature, not wet lab procedures
 
 REMOVE any tasks that:
-- Are specific to a particular paper or dataset
+- Are overly specific to this exact dataset (but keep tasks that could work with similar data)
 - Lack clear inputs or outputs
-- Are not widely used across biomedical research
 - Are vague or poorly defined
-- Represent niche or specialized techniques
+- Represent highly specialized techniques with limited reuse potential
 - Have generic names without specific methodological details
 - Cannot be implemented with code
 - Require physical lab equipment or manual intervention
@@ -127,10 +126,6 @@ The output should be a JSON object with three main keys:
    - "example": How this specific paper uses the software
 
 EXTRACTED INFORMATION FROM PAPER CHUNKS:
-{task_lists}
-
-Be ruthless in filtering - it's better to return a few truly common computational tasks than many that aren't universal or implementable with code.
-Respond with only a valid JSON object containing the three lists described above.
 """
 
     def process_paper(self, paper_text: str) -> dict[str, list[dict[str, Any]]]:
