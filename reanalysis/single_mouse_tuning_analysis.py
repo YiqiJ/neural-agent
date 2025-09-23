@@ -221,7 +221,7 @@ def main():
         mouse_id = sys.argv[1]
     else:
         # Default to first mouse
-        df = pd.read_parquet('data/coding_fidelity_bounds.dataset.parquet')
+        df = pd.read_parquet('../data/coding_fidelity_bounds.dataset.parquet')
         mouse_id = df['mouse_id'].unique()[0]
     
     print("="*70)
