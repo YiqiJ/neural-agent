@@ -1,4 +1,4 @@
-name: biomni_e1
+name: neural_agent
 channels:
   - conda-forge
   - defaults

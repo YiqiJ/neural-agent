@@ -13,7 +13,7 @@ def analyze_mouse_for_combined(mouse_id):
     print(f"Analyzing {mouse_id}...")
     
     # Load data
-    df = pd.read_parquet('data/coding_fidelity_bounds.dataset.parquet')
+    df = pd.read_parquet('data/oleg_data.parquet')
     mouse_df = df[df['mouse_id'] == mouse_id].copy()
     
     # Calculate mean responses

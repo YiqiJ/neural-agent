@@ -1,0 +1,22 @@
+You are now trying to analyze a neural dataset to reproduce a result shown in a paper. The data is located under data/oleg_data.parquet.
+
+First read the data, then give me a summary of the data including the number of mouse, the number of cells for each mouse, number of trials for each mouse, behavior types, and trial length for each mouse. 
+
+Second, based on the task description and figure caption, using the dataset you just read to reproduce the figure.
+
+[Task Description]
+- task_name: Noise Correlation Analysis in Neural Populations,
+- description: Calculates pairwise correlation coefficients between neurons to quantify correlated variability in neural responses after accounting for stimulus-driven activity.
+- Output: a figure and a table.
+
+[Figure Caption]
+- Histograms of noise correlation coefficients differed significantly for cell pairs with similarly or differently tuned mean responses to the two stimuli, computed for the top 10% most active cells and by grouping cell pairs into those with positively or negatively correlated mean responses to the two stimuli. (***P < 1.3 × 10−6 for all 5 mice; two-tailed Kolmogorov–Smirnov test; 901 cells, 43,887 positively and 43,768 negatively correlated pairs).
+    - Definition of "the top 10% most active cells": We compared the statistical distributions of mean correlation coefficients for two different sets of cell pairs. To visually highlight the differences between the two distributions, we also analysed only the most responsive cells, defined as those cells with the top 10% values of \sqrt{<r_A>^2 + <r_B>^2}, where r_A and r_B are the mean responses to the two stimuli.
+
+[Table Description]
+- headers are: comparison, test, N-value, p-values for each mouse, num. cells, num mice
+- comparison has entry: pairwise noise correlations, positively vs. negatively tuned cells, top 10% active cells.
+- test has entry: Kolmogorov–Smirnov
+- fill in the other entries with the data summary from the dataset and the calculated p-values and number of positively/negatively correalted cell pairs.
+
+Finally, plot the final histogram figure, write the table, and output the intermediate logs and figures if necessary.

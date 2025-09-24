@@ -5,6 +5,8 @@ biomni_env/biomni_tools/*
 .gradio/
 *xlsx
 scripts/*.png
+**/*.png
+**/*.csv
 notebooks/figures/*
 notebooks/tmp_dir/*
 notebooks/tmp_directory/*
