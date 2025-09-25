@@ -1,0 +1,29 @@
+You are now trying to analyze a neural dataset to reproduce a result shown in a paper. The data is located under data/oleg_data.parquet.
+
+First read only the data, then give me a summary of the data including the number of mouse, the number of cells for each mouse, number of trials for each mouse, behavior types, and trial length for each mouse. 
+[Data Summary]
+- arranged as 3‑D tensors of (neurons × time bins × trials), for each of the two visual stimuli.
+- Each time bin represents 0.275 s.
+- Each trial consists of a 2 s drifting‑grating stimulus followed by 1.85 s of uniform background.
+- The time origin is stimulus onset. Bins beyond ~2 s belong to the post‑stimulus background.
+
+Confirm with the user on the data summary if you have successfully read the data and understand it. Do not proceed until the user confirm.
+
+Second, based on the task description and figure caption, using the dataset you just read to reproduce the figure. Do not read or use scripts and functions in this project.
+
+[Task Description]
+- task_name: Partial Least Squares Dimensionality Reduction for Neural Data.
+- description: Reduces high-dimensional neural data to a lower-dimensional representation that maximizes discrimination between stimulus conditions.
+- input: High-dimensional neural activity data and corresponding stimulus labels.
+- output: Reduced-dimensional representation (typically 5D in this paper) that preserves stimulus-related variance.
+- method: Our approach to dimensional reduction relied on a PLS discriminant analysis. The PLS discriminant analysis enabled us to find the dimensions of the population vector space that were most informative about which visual stimulus was shown. To determine how many dimensions were important for discriminating the two stimuli, we constructed an orthonormal projection operator, which projected the No-dimensional (or N_o × N_t dimensional) ensemble neural responses onto a truncated set of the N_R dimensions identified by the PLS discriminant analysis as being the most informative about the identity of the visual stimulus.
+
+[Figure Caption]
+For real data analysis
+- Neural ensemble responses, 0.15 s (left) and 1 s (right) after stimulus onset, in the two-dimensional space in which the sets of responses to the two stimuli are most distinct, for real datasets. The blue and red crosses denote individual trials (220 trials per stimulus); the green line mark the classification boundaries for real data; and the vertical black line is the classification boundary for diagonal discrimination, which ignores correlations in the responses of the cells.  
+
+For shuffle data analysis
+- Neural ensemble responses, 0.15 s (left) and 1 s (right) after stimulus onset, in the two-dimensional space in which the sets of responses to the two stimuli are most distinct, for shuffled datasets. The blue and red crosses denote individual trials (220 trials per stimulus); the green line mark the classification boundaries for shuffled data; and the vertical black line is the classification boundary for diagonal discrimination, which ignores correlations in the responses of the cells.  
+    - To create trial-shuffled datasets, we randomly permuted the activity traces of each cell across the full set of trials in which the same stimulus was presented, using a different random permutation for each individual cell. Thus, the trial-shuffled datasets preserved the statistical distributions of each cell’s responses to the two stimuli, but any temporally correlated fluctuations in different cells’ stimulus-evoked responses were scrambled. For analyses of trial-shuffled data, we averaged results over 100 different randomly chosen subsets of cells and/or stimulation trials, each of which was trial-shuffled with its own distinct permutation
+
+Finally, plot the final figure with 4 panels: top left panel corresponds to 0.15s using real data, top right panel corresponds to 1s using real data, bottom left panel corresponds to 0.15s using shuffled data, and bottom right panel corresponds to 1s using shuffled data. Note that the x-axis for all panels are PLS dim-1 and the y-axis for all panels are PLS dim-2. Plot this figure for all mice separately. Output the intermediate progress logs.
