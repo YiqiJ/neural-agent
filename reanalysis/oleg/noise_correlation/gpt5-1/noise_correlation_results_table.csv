@@ -1,0 +1,2 @@
+comparison,test,N-value,num. cells,num mice,p(Mouse_L347),p(Mouse_L354),p(Mouse_L355),p(Mouse_L362),p(Mouse_L363)
+"pairwise noise correlations, positively vs. negatively tuned cells, top 10% active cells",Kolmogorov–Smirnov,"+pairs=34985, -pairs=34769",807,5,3.398799392127749e-55,4.427192781991671e-10,3.152348664095438e-91,5.873920313195577e-41,7.159245310451025e-10
