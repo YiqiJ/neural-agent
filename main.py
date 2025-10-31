@@ -1,4 +1,4 @@
-from src.agent import main
+from src.agents.agent import main
 
 if __name__ == "__main__":
     main()

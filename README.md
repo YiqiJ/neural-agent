@@ -36,20 +36,35 @@ Example input in interactive mode:
 
 ## What it does
 
-- Parses your natural-language request to find a .parquet path (via simple heuristics or OpenAI tool-calling if configured).
-- Loads the dataset using `src/data.py::read_data`.
-- Computes a per-mouse summary via `src/data.py::dataset_summary`.
-- Prints a readable table to the terminal.
 
 ## Project layout
 
-- `src/data.py` — data loading and summary utilities (already provided)
-- `src/agent.py` — minimal agent that parses queries and calls data functions
-- `src/__init__.py` — marks `src` as a Python package
-- `main.py` — small CLI entry point
-- `data/` — includes `oleg_data.parquet` example
 
 ## Notes
 
-- OpenAI is optional; without an API key the agent falls back to simple regex extraction for the dataset path.
-- If you have very large datasets, ensure you have enough RAM and that `pyarrow` is installed (included in `requirements.txt`).
+
+## MCP server (optional)
+
+This repo includes a minimal Model Context Protocol (MCP) server exposing a dataset utility:
+
+- Tool `list_mice(dataset_root: str, pattern?: str, include_full_paths?: bool)` returns subject directories (e.g., `Subject-<id>` or `Mouse-<id>`).
+
+Install dependencies if not already:
+
+```powershell
+python -m pip install -r requirements.txt
+```
+
+Quick one-off check (prints JSON):
+
+```powershell
+python -m src.tools.mcp_server --dataset-root data --once
+```
+
+Start the MCP server on stdio:
+
+```powershell
+python -m src.tools.mcp_server
+```
+
+You can connect with an MCP-compatible client to call `list_mice`.
